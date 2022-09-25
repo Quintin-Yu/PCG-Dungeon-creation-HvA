@@ -17,6 +17,7 @@ public enum TileType {
 public class LevelGenerator : MonoBehaviour
 {
     public GameObject[] tiles;
+    public List<SubDungeon> rooms = new List<SubDungeon> (); 
 
     int maxDungeonSize;
     int minRoomSize = 10;
@@ -43,8 +44,9 @@ public class LevelGenerator : MonoBehaviour
         DrawRooms(rootSubDungeon);
         DrawCorridors(rootSubDungeon);
 
+        SaveRooms(rootSubDungeon);
         //SpawnPlayer(grid[1, 1], Random.Range(0, maxDungeonSize), Random.Range(0, maxDungeonSize));
-        SpawnPlayer(rootSubDungeon);
+        SpawnObjects();
 
         //use 2d array (i.e. for using cellular automata)
         CreateTilesFromArray(grid);
@@ -167,10 +169,31 @@ public class LevelGenerator : MonoBehaviour
     }
     #endregion
 
-    void SpawnPlayer(SubDungeon subDungeon)
+    void SaveRooms(SubDungeon subDungeon)
     {
-        Rect room = subDungeon.GetRoom();
+        if (subDungeon.IAmLeaf())
+        {
+            rooms.Add(subDungeon);
+        }
+        else
+        {
+            SaveRooms(subDungeon.left);
+            SaveRooms(subDungeon.right);
+        }
+    }
 
-        FillBlock(grid, (int)Random.Range(room.x, room.width), (int)Random.Range(room.y, room.width), 1, 1, TileType.Player);
+    /// <summary>
+    /// This method should be changed so that the objects are spawned using a formula based on the rooms.Count to avoid out of index errors.
+    /// </summary>
+    void SpawnObjects()
+    {
+        int startersRoom = (int)Random.Range(0, rooms.Count);
+
+        FillBlock(grid, (int)rooms[startersRoom].room.x + 2, (int)rooms[startersRoom].room.y + 2, 1, 1, TileType.Player);
+        FillBlock(grid, (int)rooms[startersRoom++].room.x + 2, (int)rooms[startersRoom++].room.y + 2, 1, 1, TileType.Dagger);
+        FillBlock(grid, (int)rooms[startersRoom + 2].room.x + 2, (int)rooms[startersRoom + 2].room.y + 2, 1, 1, TileType.Enemy);
+        FillBlock(grid, (int)rooms[startersRoom + 3].room.x + 2, (int)rooms[startersRoom + 3].room.y + 2, 1, 1, TileType.Key);
+        FillBlock(grid, (int)rooms[startersRoom + 4].room.x + 2, (int)rooms[startersRoom + 4].room.y + 2, 1, 1, TileType.Door);
+        FillBlock(grid, (int)rooms[startersRoom + 5].room.x + 2, (int)rooms[startersRoom + 5].room.y + 2, 1, 1, TileType.End);
     }
 }
