@@ -20,16 +20,16 @@ namespace InGame {
             int moveX = 0;
             int moveY = 0;
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
-                moveY = 1;
+                moveY = 2;
             }
             if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
-                moveY = -1;
+                moveY = -2;
             }
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-                moveX = -1;
+                moveX = -2;
             }
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-                moveX = 1;
+                moveX = 2;
             }
             if (Input.GetKey(KeyCode.LeftShift)) {
                 moveX += moveX;

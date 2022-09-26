@@ -187,7 +187,7 @@ public class LevelGenerator : MonoBehaviour
     /// </summary>
     void SpawnObjects()
     {
-        int startersRoom = (int)Random.Range(0, rooms.Count - 1);
+        int startersRoom = (int)Random.Range(0, rooms.Count - 5);
 
         FillBlock(grid, (int)rooms[startersRoom].room.x + 2, (int)rooms[startersRoom].room.y + 2, 1, 1, TileType.Player);
         FillBlock(grid, (int)rooms[startersRoom++].room.x + 2, (int)rooms[startersRoom++].room.y + 2, 1, 1, TileType.Dagger);
